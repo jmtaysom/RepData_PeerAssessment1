@@ -13,17 +13,17 @@ library(plyr)
 library(ggplot2)
 
 ## Download, unzip and cleanup
-setwd("~/datasciencecoursera/Explore/Project2")
-zip <- 'pmdata.zip'
-url = 'https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip'
+#setwd("~/RepData_PeerAssessment1")
+zip <- 'activity.zip'
+url = 'https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip'
 download.file(url, zip, method='curl')
 unzip(zip)
 file.remove(zip)
 rm(list=ls())
 
 ## Read in the data
-NEI <- readRDS("summarySCC_PM25.rds")
-SCC <- readRDS("Source_Classification_Code.rds")
+activity <- read.csv("activity.csv")
+
 
 ## summarise the data to find the total emissions (in tons) per year
 vehiclesSCC <- SCC[grepl("Vehicle", SCC$SCC.Level.Two), ]
