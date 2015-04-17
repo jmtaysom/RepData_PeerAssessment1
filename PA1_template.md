@@ -67,6 +67,15 @@ ggplot(average.day, aes(interval,steps)) + geom_line() + xlab("Interval") +ylab(
 
 ![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
+```r
+# Which interval has the highest number of steps?
+average.day[which.max(average.day$steps),'interval']
+```
+
+```
+## [1] 835
+```
+
 ## Imputing missing values
 There are a few days when the activity monitor data reported NA probably from the device not being worn. Lets figure out how many intervals reported NA. Then lets try to remove some of the bias of not having data on those days by filling in the NAs with the average daily interval value for that NA. With the new data we will look at the new average steps per day and the median steps per day.
 

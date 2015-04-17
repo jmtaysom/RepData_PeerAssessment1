@@ -42,6 +42,8 @@ Lets take a look at what an average day looks like. Here is a time series of the
 # Calculate average number of steps per interval over all days.
 average.day <- ddply(activity, "interval", summarize, steps = mean(steps, na.rm=TRUE))
 ggplot(average.day, aes(interval,steps)) + geom_line() + xlab("Interval") +ylab("Average Steps")
+# Which interval has the highest number of steps?
+average.day[which.max(average.day$steps),'interval']
 ```
 
 ## Imputing missing values
