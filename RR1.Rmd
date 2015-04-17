@@ -5,6 +5,7 @@ In this project we are bringing in a dataset of activity data from a fitness mon
 ## load Required Libraries 
 library(plyr)
 library(ggplot2)
+library(timeDate)
 ## Download, unzip and cleanup
 zip <- 'activity.zip'
 url = 'https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip'
@@ -44,6 +45,14 @@ mean(daily_activity2$daily.steps, na.rm=TRUE)
 median(daily_activity2$daily.steps, na.rm=TRUE)
 ```
 
+Lets now compare the activity between weekdays and the weekend.
+
+```{r}
+activity2$weekday <- factor(isWeekday(activity2$date,wday=1:5),
+                            labels=c('Weekend', 'Weekday'))
+average.weekday <- ddply(activity2, c("interval","weekday"), summarize, steps = mean(steps))
+ggplot(average.weekday, aes(interval,steps)) + geom_line(color="blue") + xlab("Interval") +ylab("Average Steps") + facet_wrap(~weekday, nrow=2)
+```
 
 
 
