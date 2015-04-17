@@ -1,7 +1,7 @@
 Reproduceable Reasearch Assignment 1
 ====================================
 In this project we are bringing in a dataset of activity data from a fitness monitoring device. The dat includes the number of steps taken in each five minute interval of the day.
-```{R}
+```{r}
 ## load Required Libraries 
 library(plyr)
 library(ggplot2)
@@ -24,6 +24,27 @@ qplot(daily.steps, data=daily_activity, geom="histogram", binwidth=1000)
 mean(daily_activity$daily.steps, na.rm=TRUE)
 median(daily_activity$daily.steps, na.rm=TRUE)
 ```
+
+Lets take a look at what an average day looks like. Here is a time series of the average number of steps taken in each 5 minute interval throughout the day.
+
+```{r}
+average.day <- ddply(activity, "interval", summarize, steps = mean(steps, na.rm=TRUE))
+ggplot(average.day, aes(interval,steps)) + geom_line() + xlab("Interval") +ylab("Average Steps")
+```
+
+There are a few days when the activity monitor data reported NA probably from the device not being worn. Lets figure out how many intervals reported NA. Then lets try to remove some of the bias of not having data on those days by filling in the NAs with the average daily interval value for that NA. With the new data we will look at the new average steps per day and the median steps per day.
+
+```{r}
+sum(is.na(activity$steps))
+impute.mean <- function(x) replace(x, is.na(x), mean(x, na.rm = TRUE))
+activity2 <- ddply(activity, "interval", transform, steps = impute.mean(steps))
+daily_activity2 <- ddply(activity2, "date", summarize, daily.steps = sum(steps))
+qplot(daily.steps, data=daily_activity2, geom="histogram", binwidth=1000)
+mean(daily_activity2$daily.steps, na.rm=TRUE)
+median(daily_activity2$daily.steps, na.rm=TRUE)
+```
+
+
 
 
 
