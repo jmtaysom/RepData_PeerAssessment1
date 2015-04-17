@@ -1,0 +1,29 @@
+Reproduceable Reasearch Assignment 1
+====================================
+In this project we are bringing in a dataset of activity data from a fitness monitoring device. The dat includes the number of steps taken in each five minute interval of the day.
+```{R}
+## load Required Libraries 
+library(plyr)
+library(ggplot2)
+## Download, unzip and cleanup
+zip <- 'activity.zip'
+url = 'https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip'
+download.file(url, zip, method='curl')
+unzip(zip)
+file.remove(zip)
+rm(list=ls())
+## Read in the data and summarise by day
+activity <- read.csv("activity.csv")
+#activity[is.na(activity)] <- 0
+```
+Now we want to explore the data a little more.  Lets look at a histogram, the mean, and the median of steps per day.
+
+```{r}
+daily_activity <- ddply(activity, "date", summarize, daily.steps = sum(steps))
+qplot(daily.steps, data=daily_activity, geom="histogram", binwidth=1000)
+mean(daily_activity$daily.steps, na.rm=TRUE)
+median(daily_activity$daily.steps, na.rm=TRUE)
+```
+
+
+
